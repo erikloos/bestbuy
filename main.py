@@ -1,4 +1,4 @@
-
+from products import Product
 
 def main():
     pass
