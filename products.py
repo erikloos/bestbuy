@@ -53,5 +53,3 @@ class Product:
         self.set_quantity(new_quantity)
         price = self.price * quantity
         return float(price)
-
-
