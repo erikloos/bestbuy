@@ -1,3 +1,5 @@
+"""Main module to run the program """
+
 from products import Product
 from store import Store
 
@@ -10,6 +12,7 @@ best_buy = Store(product_list)
 
 
 def start(current_store: Store) -> None:
+    """Run the store loop and handle the user commands."""
     while True:
         print_menu()
         command = get_valid_input()
@@ -30,6 +33,7 @@ def start(current_store: Store) -> None:
 
 
 def order_products(current_store: Store) -> None:
+    """Handle the order process for a user."""
     shopping_list = []
     while True:
         all_products = current_store.get_all_products()
@@ -56,6 +60,7 @@ def order_products(current_store: Store) -> None:
 
 
 def get_valid_order(all_products: list[Product]) -> tuple[Product, int] | None:
+    """Gets and handles the input of the user for a valid product and quantity."""
     while True:
         print("Press Enter on both inputs to finish your order")
         print_all_products(all_products)
@@ -87,6 +92,7 @@ def get_valid_order(all_products: list[Product]) -> tuple[Product, int] | None:
 
 
 def print_all_products(all_products: list[Product]) -> None:
+    """Print all available products."""
     print("Available Products:")
     print("------")
     for index, product in enumerate(all_products, 1):
@@ -96,6 +102,7 @@ def print_all_products(all_products: list[Product]) -> None:
 
 
 def print_menu() -> None:
+    """Print the store menu with the options the user can choose."""
     print(
         "   Store Menu\n"
         f"   {'-' * 8}\n"
@@ -106,6 +113,7 @@ def print_menu() -> None:
 
 
 def get_valid_input() -> int:
+    """Check the user for a valid menu selection and handles the input."""
     while True:
         try:
             user_command = int(input("Please choose a number: "))
@@ -119,6 +127,7 @@ def get_valid_input() -> int:
 
 
 def main() -> None:
+    """Start the program."""
     start(best_buy)
 
 
