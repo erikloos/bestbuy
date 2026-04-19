@@ -30,7 +30,7 @@ def start(current_store: Store) -> None:
 
 
 def order_products(current_store: Store) -> None:
-    total_price = 0
+    shopping_list = []
     while True:
         all_products = current_store.get_all_products()
         if not all_products:
@@ -38,16 +38,21 @@ def order_products(current_store: Store) -> None:
             break
         current_order = get_valid_order(all_products)
         if current_order is None:
-            print(f"Your total price is {total_price:.2f}\n")
-            break
+            if not shopping_list:
+                print("Your shopping cart is empty. No purchase made.")
+                break
+            try:
+                total_price = current_store.order(shopping_list)
+                print(f"Your total price is {total_price:.2f}\n")
+                break
+            except Exception as e:
+                print(f"Purchase failed: {e}")
+                break
 
-        try:
-            shopping_list = [current_order]
-            current_price = current_store.order(shopping_list)
-            total_price += current_price
-            print(f"This order costs: {current_price:.2f}\n")
-        except Exception as e:
-            print(f"Purchase failed: {e}")
+        shopping_list.append(current_order)
+        print("Your order was added to your cart\n")
+
+
 
 
 def get_valid_order(all_products: list[Product]) -> tuple[Product, int] | None:
@@ -63,9 +68,15 @@ def get_valid_order(all_products: list[Product]) -> tuple[Product, int] | None:
 
             product_number = int(product_number)
             amount = int(amount)
+            if product_number <= 0 or amount <= 0:
+                print("Please enter a valid number")
+                continue
+
             product = all_products[product_number - 1]
-            current_order = (product, amount)
-            return current_order
+            if product.get_quantity() < amount:
+                print("Not enough quantity of this product available")
+                continue
+            return product, amount
 
         except IndexError:
             print("Error: The number does not belong to a product\n")

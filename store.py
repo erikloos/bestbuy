@@ -33,9 +33,28 @@ class Store:
 
     def order(self, shopping_list: list[tuple[Product, int]]) -> float:
         total_price = 0
+        quantities_by_product = {}
+
+        # Collect quantity for each product
         for item in shopping_list:
             product = item[0]
             quantity = item[1]
+            if product not in quantities_by_product:
+                quantities_by_product[product] = quantity
+            else:
+                quantities_by_product[product] += quantity
+
+        # Validate if product has enough quantity and is available
+        for product, quantity in quantities_by_product.items():
             if product in self.product_list and product.is_active():
-                total_price += product.buy(quantity)
+                if product.get_quantity() < quantity:
+                    raise Exception("Not enough quantity of product available")
+                if quantity <= 0:
+                    raise Exception("Enter a valid quantity")
+            else:
+                raise Exception("Product is not available")
+
+        # Buy each product and changes its quantity
+        for product, quantity in quantities_by_product.items():
+            total_price += product.buy(quantity)
         return total_price
