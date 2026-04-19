@@ -40,8 +40,8 @@ class Product:
         self.active = False
 
 
-    def show(self):
-        print(f"{self.name}, Price: {self.price}, Quantity: {self.quantity}")
+    def show(self) -> str:
+        return f"{self.name}, Price: {self.price}, Quantity: {self.quantity}"
 
 
     def buy(self, quantity: int) -> float:
@@ -49,7 +49,7 @@ class Product:
             raise Exception("Need a valid quantity for purchase")
         new_quantity = self.quantity - quantity
         if new_quantity < 0:
-            raise Exception("Not enough quantity. Purchase can not be made")
+            raise Exception("Not enough quantity.")
         self.set_quantity(new_quantity)
         price = self.price * quantity
         return float(price)
